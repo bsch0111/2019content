@@ -1,13 +1,9 @@
-import GMS_Feature
-import ORB_Feature
-import IMS_Feature
-import dHash_Feature
+import EXGMS_Feature
+import EXORB_Feature
+import EXIMS_Feature
+import EXdHash_Feature
 import hashlib
 import numpy as np
-
-
-def printFeature():
-    print("수정 필요")
 
 def toSha256(pdata):
     hashenc = hashlib.sha256()
@@ -29,12 +25,12 @@ if __name__ == '__main__':
     
     pORB_data = ORB_Feature.ORB(img1_path)
     pORB = toSha256(pORB_data)
-    #pIMS = IMS_Feature.IMS(img1_path)
-    #pdHash_Signature = dHash_Feature.dHash(img1_path)
-
-
-    print(pGMS)
-    print(pORB)
-
-
+    
+    pIMS_data = IMS_Feature.IMS(img1_path)
+    pIMS = toSha256(pIMS_data)
+    pdHash = dHash_Feature.dHash(img1_path)
+    
+    #출력은 GMS, ORB, IMS, dHash 순으로 ,에 맞추어 출력
+    #stdout으로 출력하고 차후 데이터 베이스화 할때는 csv를 이용한 입력을 이용
+    print(pGMS," , ",pORB," , ",pIMS," , ",pdHash)
 
