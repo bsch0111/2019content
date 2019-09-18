@@ -30,6 +30,24 @@
     <Compile Include="FLANN_BFMatch.py" />
     <Compile Include="SIFT_BFMatch.py" />
     <Compile Include="ORB_BFMatch.py" />
+    <Compile Include="v0.02\dHash_Feature.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="v0.02\GMS_Feature.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="v0.02\IMS_Feature.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="v0.02\main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="v0.02\ORB_Feature.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="v0.02\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

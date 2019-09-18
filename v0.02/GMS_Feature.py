@@ -1,14 +1,10 @@
 import math
 from enum import Enum
-import pandas
-import sys
-import cv2
-import hashlib
 
+import cv2
 cv2.ocl.setUseOpenCL(False)
 
 import numpy as np
-from image_match.goldberg import ImageSignature
 
 THRESHOLD_FACTOR = 6
 
@@ -49,6 +45,7 @@ class Size:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+
 
 class DrawingType(Enum):
     ONLY_LINES = 1
@@ -94,6 +91,7 @@ class GmsMatcher:
         self.grid_number_left = self.grid_size_left.width * self.grid_size_left.height
 
         # Initialize the neihbor of left grid
+        #self.grid_neighbor_left = np.zeros((self.grid_number_left, 9))
         self.grid_neighbor_left = np.zeros((self.grid_number_left, 9))
 
         self.descriptor = descriptor
@@ -125,20 +123,20 @@ class GmsMatcher:
         self.initialize_neighbours(self.grid_neighbor_left, self.grid_size_left)
 
         mask, num_inliers = self.get_inlier_mask(False, False)
-        print('Found', num_inliers, 'matches')
+        #print('Found', num_inliers, 'matches')
 
 
-        data = [[len(self.keypoints_image1),len(self.keypoints_image2),len(all_matches)]]
-        result_data=pandas.DataFrame(data, columns=['Image1_feature','Image2_feature','match_feature'])
-
-        print(result_data)
+        #data = [[len(self.keypoints_image1),len(self.keypoints_image2),len(all_matches)]]
+        #result_data=pandas.DataFrame(data, columns=['Image1_feature','Image2_feature','match_feature'])
+        #print(result_data)
+        return self.keypoints_image1
 
         for i in range(len(mask)):
             if mask[i]:
                 self.gms_matches.append(all_matches[i])
         return self.gms_matches
 
-    # Normalize Key points to range (0-1)
+   # Normalize Key points to range (0-1)
     def normalize_points(self, kp, size, npts):
         for keypoint in kp:
             npts.append((keypoint.pt[0] / size.width, keypoint.pt[1] / size.height))
@@ -370,43 +368,20 @@ class GmsMatcher:
         cv2.waitKey()
 
 
+def GMS(file_path):
 
-
-if __name__ == '__main__':
-
-
-    #img1_path = sys.argv[1]
-    #img2_path = sys.argv[2]
-    
-    img1_path = "./data/0.3THz.jpg"
-    img2_path = "./data/test.jpg"
-
-    img1 = cv2.imread(img1_path)
-    img2 = cv2.imread(img2_path)
+    img1 = cv2.imread(file_path)
+    img2 = cv2.imread("./data/test.jpg")
 
     orb = cv2.ORB_create(100000)
     orb.setFastThreshold(0)
+
     if cv2.__version__.startswith('3'):
         matcher = cv2.BFMatcher(cv2.NORM_HAMMING)
     else:
         matcher = cv2.BFMatcher_create(cv2.NORM_HAMMING)
     gms = GmsMatcher(orb, matcher)
-
-    matches = gms.compute_matches(img1, img2)
-
-    gis = ImageSignature()
-    img1_gis = gis.generate_signature(img1_path)
-    img2_gis = gis.generate_signature(img2_path)
-
-    hashenc = hashlib.sha256()
-    hashenc.update(img1_gis)
-    encText = hashenc.hexdigest()
+    img1_feature = gms.compute_matches(img1, img2)
 
 
-    temp_c = gis.normalized_distance(img1_gis,img2_gis)
-
-    nomalized_distance = [[temp_c]]
-    result_data=pandas.DataFrame(nomalized_distance, columns=['     A&B normalized_distance'])
-    # distances of less than 0.40 are very likely matches
-    print(result_data)
-
+    return img1_feature
