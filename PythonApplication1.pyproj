@@ -36,16 +36,22 @@
     <Compile Include="v0.02\EXGMS_Feature.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="v0.02\image_compare.py">
+    <Compile Include="v0.02\compare_image.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="v0.02\EXIMS_Feature.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="v0.02\image_feature_extract.py">
+    <Compile Include="v0.02\extract_image_feature.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="v0.02\EXORB_Feature.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="v0.02\CPGMS_Feature.py" />
+    <Compile Include="v0.02\CPdHash_Feature.py" />
+    <Compile Include="v0.02\CPORB_Feature.py" />
+    <Compile Include="v0.02\CPIMS_Feature.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

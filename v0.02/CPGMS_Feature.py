@@ -1,7 +1,6 @@
 import math
 from enum import Enum
 import pandas
-
 import cv2
 cv2.ocl.setUseOpenCL(False)
 
@@ -47,6 +46,7 @@ class Size:
         self.width = width
         self.height = height
 
+
 class DrawingType(Enum):
     ONLY_LINES = 1
     LINES_AND_POINTS = 2
@@ -91,7 +91,6 @@ class GmsMatcher:
         self.grid_number_left = self.grid_size_left.width * self.grid_size_left.height
 
         # Initialize the neihbor of left grid
-        #self.grid_neighbor_left = np.zeros((self.grid_number_left, 9))
         self.grid_neighbor_left = np.zeros((self.grid_number_left, 9))
 
         self.descriptor = descriptor
@@ -123,13 +122,12 @@ class GmsMatcher:
         self.initialize_neighbours(self.grid_neighbor_left, self.grid_size_left)
 
         mask, num_inliers = self.get_inlier_mask(False, False)
-        print('Found', num_inliers, 'matches')
 
 
         data = [[len(self.keypoints_image1),len(self.keypoints_image2),len(all_matches)]]
         result_data=pandas.DataFrame(data, columns=['Image1_feature','Image2_feature','match_feature'])
 
-        print(result_data)
+        return result_data;
 
         for i in range(len(mask)):
             if mask[i]:
@@ -368,22 +366,21 @@ class GmsMatcher:
         cv2.waitKey()
 
 
-if __name__ == '__main__':
-    img1 = cv2.imread("./data/0.3THz.jpg")
-    img2 = cv2.imread("./data/test.jpg")
+def CPGMS(file1, file2):
+
+    img1 = cv2.imread(file1)
+    img2 = cv2.imread(file2)
 
     orb = cv2.ORB_create(100000)
     orb.setFastThreshold(0)
-
 
     if cv2.__version__.startswith('3'):
         matcher = cv2.BFMatcher(cv2.NORM_HAMMING)
     else:
         matcher = cv2.BFMatcher_create(cv2.NORM_HAMMING)
+
     gms = GmsMatcher(orb, matcher)
+    img1_feature = gms.compute_matches(img1, img2)
+    #gms.draw_matches(img1, img2, DrawingType.COLOR_CODED_POINTS_XpY)
 
-    matches = gms.compute_matches(img1, img2)
-    # gms.draw_matches(img1, img2, DrawingType.ONLY_LINES)
-    gms.draw_matches(img1, img2, DrawingType.COLOR_CODED_POINTS_XpY)
-
-
+    return img1_feature

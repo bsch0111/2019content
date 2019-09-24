@@ -18,17 +18,18 @@ if __name__ == '__main__':
     
     img1_path = "./data/0.3THz.jpg"
 
-    pGMS_ListOfKeyPoint = GMS_Feature.GMS(img1_path)
+    pGMS_ListOfKeyPoint = EXGMS_Feature.GMS(img1_path)
     pGMS_data = np.array(pGMS_ListOfKeyPoint)
     pGMS = toSha256(pGMS_data)
 
     
-    pORB_data = ORB_Feature.ORB(img1_path)
+    pORB_data = EXORB_Feature.ORB(img1_path)
     pORB = toSha256(pORB_data)
     
-    pIMS_data = IMS_Feature.IMS(img1_path)
+    pIMS_data = EXIMS_Feature.IMS(img1_path)
     pIMS = toSha256(pIMS_data)
-    pdHash = dHash_Feature.dHash(img1_path)
+
+    pdHash = EXdHash_Feature.dHash(img1_path)
     
     #출력은 GMS, ORB, IMS, dHash 순으로 ,에 맞추어 출력
     #stdout으로 출력하고 차후 데이터 베이스화 할때는 csv를 이용한 입력을 이용
